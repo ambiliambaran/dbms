@@ -1,0 +1,25 @@
+SET SERVEROUTPUT ON;
+DECLARE
+    eid emptbl.empid%TYPE;
+    ename emptbl.ename%TYPE;
+    salary emptbl.salary%TYPE;
+    CURSOR emp IS SELECT empid, ename, salary FROM emptbl WHERE empid IN (1, 2, 3);
+BEGIN
+    OPEN emp;
+    LOOP
+        FETCH emp INTO eid, ename, salary;
+        EXIT WHEN emp%NOTFOUND;
+        dbms_output.put_line('Current salary of ' || eid || ' is ' || salary);
+        IF eid = 1 THEN
+            salary := salary + 1000;
+        ELSIF eid = 2 THEN
+            salary := salary + 2000;
+        ELSIF eid = 3 THEN
+            salary := salary + 5000;
+        END IF;
+        UPDATE emptbl SET salary = salary WHERE empid = eid;
+        dbms_output.put_line('Updated salary: ' || salary);
+    END LOOP;
+    CLOSE emp;
+END;
+/
