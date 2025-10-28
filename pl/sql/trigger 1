@@ -1,0 +1,15 @@
+SET SERVEROUTPUT ON;
+CREATE OR REPLACE TRIGGER display
+AFTER INSERT OR UPDATE OR DELETE ON emptbl
+FOR EACH ROW
+DECLARE
+    saldif NUMBER;
+BEGIN
+    IF UPDATING THEN
+        saldif := :NEW.salary - :OLD.salary;
+        dbms_output.put_line('Old salary: ' || :OLD.salary);
+        dbms_output.put_line('New salary: ' || :NEW.salary);
+        dbms_output.put_line('Salary diff: ' || saldif);
+    END IF;
+END;
+/
