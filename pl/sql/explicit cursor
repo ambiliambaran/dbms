@@ -1,0 +1,16 @@
+SET SERVEROUTPUT ON;
+DECLARE
+    eid emptbl.empid%TYPE;
+    ename emptbl.ename%TYPE;
+    salary emptbl.salary%TYPE;
+    CURSOR emp IS SELECT empid, ename, salary FROM emptbl WHERE ename LIKE 'A%';
+BEGIN
+    OPEN emp;
+    LOOP
+        FETCH emp INTO eid, ename, salary;
+        EXIT WHEN emp%NOTFOUND;
+        dbms_output.put_line(eid || ' ' || ename || ' ' || salary);
+    END LOOP;
+    CLOSE emp;
+END;
+/
