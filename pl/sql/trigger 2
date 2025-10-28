@@ -1,0 +1,11 @@
+SET SERVEROUTPUT ON;
+CREATE OR REPLACE TRIGGER apdt
+AFTER INSERT ON purchase
+FOR EACH ROW
+WHEN (NEW.no_of_item > 0)
+BEGIN
+    UPDATE product SET no_of_item = no_of_item - :NEW.no_of_item
+    WHERE item = :NEW.item;
+    dbms_output.put_line('Updated the stock of ' || :NEW.item);
+END;
+/
