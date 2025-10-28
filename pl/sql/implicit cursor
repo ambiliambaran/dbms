@@ -1,19 +1,13 @@
 SET SERVEROUTPUT ON;
 DECLARE
-    E_ID EMPTBL.EMPID%TYPE;
-    E_NAME EMPTBL.ENAME%TYPE;
-    E_SALARY EMPTBL.SALARY%TYPE;
-    CURSOR EMP IS 
-        SELECT EMPID, ENAME, SALARY 
-        FROM EMPTBL
-        WHERE ENAME LIKE 'A%';
+    total NUMBER;
 BEGIN
-    OPEN EMP;
-    LOOP
-        FETCH EMP INTO E_ID, E_NAME, E_SALARY;
-        EXIT WHEN EMP%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE(E_ID || ' ' || E_NAME || ' ' || E_SALARY);
-    END LOOP;
-    CLOSE EMP;
+    UPDATE emptbl SET salary = salary * 1.1 WHERE ename LIKE 'A%';
+    IF SQL%NOTFOUND THEN
+        dbms_output.put_line('No rows updated');
+    ELSIF SQL%FOUND THEN
+        total := SQL%ROWCOUNT;
+        dbms_output.put_line('Total ' || total || ' emptbl rows updated.');
+    END IF;
 END;
 /
