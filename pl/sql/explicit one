@@ -1,0 +1,32 @@
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Declare a cursor to select employees whose name starts with 'A'
+    CURSOR emp_cursor IS
+        SELECT empno, ename, salary
+        FROM emptbl2
+        WHERE ename LIKE 'A%';
+    
+    -- Record variable to hold each row fetched from the cursor
+    emp_record emp_cursor%ROWTYPE;
+BEGIN
+    -- Open the cursor
+    OPEN emp_cursor;
+    
+    LOOP
+        -- Fetch each row into the record variable
+        FETCH emp_cursor INTO emp_record;
+        
+        -- Exit the loop when no more rows
+        EXIT WHEN emp_cursor%NOTFOUND;
+        
+        -- Display the employee details
+        dbms_output.put_line('Emp No: ' || emp_record.empno ||
+                             ', Name: ' || emp_record.ename ||
+                             ', Salary: ' || emp_record.salary);
+    END LOOP;
+    
+    -- Close the cursor
+    CLOSE emp_cursor;
+END;
+/
